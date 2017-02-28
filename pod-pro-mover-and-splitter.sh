@@ -2,10 +2,7 @@
 # a script to recursively find and copy files to a desired location  
 # even works with files with $ or spaces
 #
-echo
-echo 'Enter minute split with decimal; e.g. 3.0: '
-read minutes
-echo
+minutes=$(whiptail --title "Podcast Processor" --inputbox "Enter minute split with decimal; e.g. 3.0" 10 40 3>&1 1>&2 2>&3)
 #
 find ~/gPodder -type f -iname '*.mp3' -print0 |
 while IFS= read -r -d '' f; 

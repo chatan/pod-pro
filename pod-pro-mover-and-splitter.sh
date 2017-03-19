@@ -32,5 +32,6 @@ done
 umount /dev/sdd1
 sudo fatsort /dev/sdd1
 else
-whiptail --title "Podcast Processor" --msgbox "All done -  pull out the USB" 10 30
+whiptail --title "Podcast Processor" --msgbox "Exited" 10 30
 fi
+whiptail --title "Podcast Processor" --msgbox "All done -  pull out the USB" 10 30

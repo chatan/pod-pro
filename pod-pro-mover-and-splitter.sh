@@ -3,7 +3,7 @@
 # even works with files with $ or spaces
 #
 minutes=$(whiptail --title "Podcast Processor" --inputbox "Enter split in minutes with decimal; e.g. 3.0 " 10 40 3>&1 1>&2 2>&3)
-# next four line are in case "cancel" is selected
+# next four lines are in case "cancel" is selected
 exitstatus=$?
 if [ $exitstatus != 0 ]; then
   exit $exitstatus
@@ -20,11 +20,15 @@ do
 #    echo ****************  processing filename=$f
 #    cp -- "$f" /media/user/VIDEO-ETC/podcasts-for-car ;
     filename=$(basename "$f")
-    short=$(whiptail --title "Podcast Processor" --inputbox "Enter a short name for $filename " 10 40 3>&1 1>&2 2>&3)    
+    short=$(whiptail --title "Podcast Processor" --inputbox "Enter a short name for $filename " --ok-button "OK" --cancel-button "Skip" 10 40 3>&1 1>&2 2>&3)    
+ exitstatus=$?
+ if [ $exitstatus = 0 ]; 
+  then
 # for next mp3splt command:
 # -  since the gpodder folders have spaces, the $f needs to be in quotes, else error
 # -  custom name with the -o option:
     mp3splt -f -t $minutes -a -d $usb -o $short@n "$f"
+    fi
 done
 umount /dev/sdd1
 sudo fatsort /dev/sdd1

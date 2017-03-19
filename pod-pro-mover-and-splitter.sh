@@ -1,6 +1,6 @@
 #!/bin/bash
-# a script to recursively find and copy files to a desired location  
-# even works with files with $ or spaces
+# a script to recursively find and split MP3 files in ~/gPodder folder to the USB drive in /dev/sdd1
+# Even works with files with $ or spaces
 #
 minutes=$(whiptail --title "Podcast Processor" --inputbox "Enter split in minutes with decimal; e.g. 3.0 " 10 40 3>&1 1>&2 2>&3)
 # next four lines are in case "cancel" is selected
@@ -17,8 +17,6 @@ whiptail --title "Podcast Processor" --msgbox "Confirm USB usb not open in Dolph
 find ~/gPodder -type f -iname '*.mp3' -print0 |
 while IFS= read -r -d '' f; 
 do 
-#    echo ****************  processing filename=$f
-#    cp -- "$f" /media/user/VIDEO-ETC/podcasts-for-car ;
     filename=$(basename "$f")
     short=$(whiptail --title "Podcast Processor" --inputbox "Enter a short name for $filename " --ok-button "OK" --cancel-button "Skip" 10 40 3>&1 1>&2 2>&3)    
  exitstatus=$?
@@ -30,8 +28,9 @@ do
     mp3splt -f -t $minutes -a -d $usb -o $short@n "$f"
     fi
 done
+# these two commands are needed to sort the mp3 files or else the media player won't play in order.
 umount /dev/sdd1
 sudo fatsort /dev/sdd1
 else
- echo "Exit"
+whiptail --title "Podcast Processor" --msgbox "All done -  pull out the USB" 10 30
 fi

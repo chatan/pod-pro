@@ -2,16 +2,23 @@
 # a script to recursively find and copy files to a desired location  
 # even works with files with $ or spaces
 #
+minutes=$(whiptail --title "Podcast Processor" --inputbox "Enter split in minutes with decimal; e.g. 3.0 " 10 40 3>&1 1>&2 2>&3)
+# next four line are in case "cancel" is selected
+exitstatus=$?
+if [ $exitstatus != 0 ]; then
+  exit $exitstatus
+fi
 # this gets mount point for the usb sdd1:
 usb=$(findmnt -nr -o target -S /dev/sdd1)
 #
-if (whiptail --title "Podcast Processor" --yesno "Confirm that the usb mounted at /dev/sdd1 is $usb" 10 60) 
+if (whiptail --title "Podcast Processor" --yesno "Confirm that the usb in mounted at /dev/sdd1 is $usb" 10 60) 
 then
-whiptail --title "Podcast Processor" --msgbox "Confirm USB is not open in Dolphin" 10 30
+whiptail --title "Podcast Processor" --msgbox "Confirm USB usb not open in Dolphin" 10 30
 find ~/gPodder -type f -iname '*.mp3' -print0 |
-minutes=$(whiptail --title "Podcast Processor" --inputbox "Enter split in minutes with decimal; e.g. 3.0 " 10 40 3>&1 1>&2 2>&3)
 while IFS= read -r -d '' f; 
 do 
+#    echo ****************  processing filename=$f
+#    cp -- "$f" /media/user/VIDEO-ETC/podcasts-for-car ;
     filename=$(basename "$f")
     short=$(whiptail --title "Podcast Processor" --inputbox "Enter a short name for $filename " 10 40 3>&1 1>&2 2>&3)    
 # for next mp3splt command:
